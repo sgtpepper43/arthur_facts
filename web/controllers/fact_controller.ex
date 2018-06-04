@@ -17,7 +17,7 @@ defmodule ArthurFacts.FactController do
         card: %{
           type: "Simple",
           title: "Arthur Facts",
-          text: fact
+          content: fact
         }
       }
     }))
