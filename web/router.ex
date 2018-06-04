@@ -7,5 +7,7 @@ defmodule ArthurFacts.Router do
 
   scope "/api", ArthurFacts do
     pipe_through :api
+
+    post "/facts", FactController, :get_fact
   end
 end

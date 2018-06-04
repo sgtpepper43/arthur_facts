@@ -18,6 +18,9 @@ config :arthur_facts, ArthurFacts.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
 
+config :arthur_facts, :fact_url, Map.fetch!(System.get_env(), "FACT_URL")
+
+
 # Do not print debug messages in production
 config :logger, level: :info
 

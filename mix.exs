@@ -19,7 +19,7 @@ defmodule ArthurFacts.Mixfile do
   def application do
     [
       mod: {ArthurFacts, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :httpoison]
     ]
   end
 
@@ -35,7 +35,8 @@ defmodule ArthurFacts.Mixfile do
       {:phoenix, "~> 1.3.2"},
       {:phoenix_pubsub, "~> 1.0"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:httpoison, "~> 1.0"}
     ]
   end
 end
