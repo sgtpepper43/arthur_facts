@@ -13,6 +13,11 @@ defmodule ArthurFacts.FactController do
         outputSpeech: %{
           type: "PlainText",
           text: fact
+        },
+        card: %{
+          type: "Simple",
+          title: "Arthur Facts",
+          text: fact
         }
       }
     }))
