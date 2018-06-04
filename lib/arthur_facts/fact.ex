@@ -1,7 +1,7 @@
 defmodule ArthurFacts.Fact do
   use GenServer
 
-  @timeout 1000 * 10 * 1 # ten minute timeout
+  @timeout 1000 * 60 * 10 # ten minute timeout
 
   defp fact_url, do: Application.get_env(:arthur_facts, :fact_url)
 
