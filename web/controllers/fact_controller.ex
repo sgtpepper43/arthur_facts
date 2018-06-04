@@ -5,7 +5,9 @@ defmodule ArthurFacts.FactController do
 
   def get_fact(conn, _params) do
     fact = Fact.get()
-    resp(conn, 200, Poison.encode!(%{
+    conn
+    |> put_resp_content_type("application/json")
+    |> resp(200, Poison.encode!(%{
       version: "1.0",
       response: %{
         outputSpeech: %{
