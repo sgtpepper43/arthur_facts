@@ -4,6 +4,15 @@ defmodule ArthurFacts.FactController do
   alias ArthurFacts.Fact
 
   def get_fact(conn, _params) do
-    resp(conn, 200, Fact.get())
+    fact = Fact.get()
+    resp(conn, 200, Poison.encode!(%{
+      version: "1.0",
+      response: %{
+        outputSpeech: %{
+          type: "PlainText",
+          text: fact
+        }
+      }
+    }))
   end
 end
