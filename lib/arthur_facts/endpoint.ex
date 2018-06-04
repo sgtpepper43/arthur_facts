@@ -21,7 +21,7 @@ defmodule ArthurFacts.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [AlexaRequestVerifier.JSONRawBodyParser, :urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Poison
 
