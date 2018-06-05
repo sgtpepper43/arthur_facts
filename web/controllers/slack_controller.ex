@@ -3,13 +3,14 @@ defmodule ArthurFacts.SlackController do
 
   alias ArthurFacts.Fact
 
-  def get_fact(conn, _params) do
+  def get_fact(conn, params) do
     fact = Fact.get()
-    conn
-    |> put_resp_content_type("application/json")
-    |> resp(200, Poison.encode!(%{
+    conn = resp(conn, 204, "")
+    HTTPoison.post(params.response_url, Poison.encode!(%{
       response_type: "in_channel",
       text: fact
-    }))
+    }), [{"Content-Type", "application/json"}])
+
+    conn
   end
 end
