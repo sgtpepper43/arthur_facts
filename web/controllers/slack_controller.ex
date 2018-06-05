@@ -7,7 +7,7 @@ defmodule ArthurFacts.SlackController do
     fact = Fact.get()
     conn = resp(conn, 204, "")
     IO.inspect(params, label: "params")
-    HTTPoison.post(params.response_url, Poison.encode!(%{
+    HTTPoison.post(params["response_url"], Poison.encode!(%{
       response_type: "in_channel",
       text: fact
     }), [{"Content-Type", "application/json"}]) |> IO.inspect(label: "post")
