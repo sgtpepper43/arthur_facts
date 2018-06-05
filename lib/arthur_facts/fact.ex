@@ -24,8 +24,7 @@ defmodule ArthurFacts.Fact do
   end
 
   @impl true
-  def handle_call(:get, _from, facts) do
-    [fact | facts] = Enum.shuffle(facts)
+  def handle_call(:get, _from, [fact | facts]) do
     {:reply, fact, refresh_facts(facts)}
   end
 
@@ -34,20 +33,18 @@ defmodule ArthurFacts.Fact do
     {:stop, :normal, nil}
   end
 
-  defp refresh_facts(facts) do
-    if length(facts) < 5 do
-      get_facts(facts)
-    else
-      facts
-    end
-  end
+  defp refresh_facts(facts) when length(facts) < 5, do: get_facts(facts)
+
+  defp refresh_facts(facts), do: facts
 
   defp get_facts([]), do: get_facts(["Arthur is from New Mexico"])
 
   defp get_facts(facts) do
     case HTTPoison.get(fact_url()) do
       {:ok, %{body: fact_resp}} ->
-        String.split(fact_resp, "\n")
+        fact_resp
+        |> String.split("\n")
+        |> Enum.shuffle()
       _ -> facts
     end
   end
