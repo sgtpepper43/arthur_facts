@@ -6,7 +6,10 @@ defmodule ArthurFacts.SlackController do
   def get_fact(conn, _params) do
     fact = Fact.get()
     conn
-    |> put_resp_content_type("text/plain")
-    |> resp(200, fact)
+    |> put_resp_content_type("application/json")
+    |> resp(200, Poison.encode!(%{
+      response_type: "in_channel",
+      text: fact
+    }))
   end
 end
