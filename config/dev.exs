@@ -34,4 +34,4 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
-config :arthur_facts, :fact_url, System.get_env("FACT_URL") || "https://gist.githubusercontent.com/sgtpepper43/130a5d017ecb1c1a518709031c1a5223/raw"
+config :arthur_facts, :fact_url, System.get_env("FACT_URL") || "https://docs.google.com/document/d/1YqyktBOgKmpL_776fzTQ17hT2cyq10ddBjsOMr2mJRk/export?format=txt"

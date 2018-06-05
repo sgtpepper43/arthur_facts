@@ -44,7 +44,8 @@ defmodule ArthurFacts.Fact do
     case HTTPoison.get(fact_url()) do
       {:ok, %{body: fact_resp}} ->
         fact_resp
-        |> String.split("\n")
+        |> String.replace("\uFEFF", "")
+        |> String.split("\r\n")
         |> Enum.shuffle()
 
       _ ->
