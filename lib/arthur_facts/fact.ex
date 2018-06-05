@@ -1,7 +1,8 @@
 defmodule ArthurFacts.Fact do
   use GenServer
 
-  @timeout 1000 * 60 * 10 # ten minute timeout
+  # ten minute timeout
+  @timeout 1000 * 60 * 10
 
   defp fact_url, do: Application.get_env(:arthur_facts, :fact_url)
 
@@ -45,7 +46,9 @@ defmodule ArthurFacts.Fact do
         fact_resp
         |> String.split("\n")
         |> Enum.shuffle()
-      _ -> facts
+
+      _ ->
+        facts
     end
   end
 end
