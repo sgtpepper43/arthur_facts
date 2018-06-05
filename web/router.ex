@@ -1,14 +1,24 @@
 defmodule ArthurFacts.Router do
   use ArthurFacts.Web, :router
 
-  pipeline :api do
+  pipeline :alexa_api do
     plug :accepts, ["json"]
     plug AlexaRequestVerifier
   end
 
-  scope "/api", ArthurFacts do
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/api/facts", ArthurFacts do
+    pipe_through :alexa_api
+
+    post "/", AlexaController, :get_fact
+  end
+
+  scope "/api/slack", ArthurFacts do
     pipe_through :api
 
-    post "/facts", FactController, :get_fact
+    get "/", SlackController, :get_fact
   end
 end

@@ -1,4 +1,4 @@
-defmodule ArthurFacts.FactController do
+defmodule ArthurFacts.AlexaController do
   use ArthurFacts.Web, :controller
 
   alias ArthurFacts.Fact
