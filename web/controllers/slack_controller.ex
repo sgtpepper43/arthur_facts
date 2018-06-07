@@ -3,6 +3,12 @@ defmodule ArthurFacts.SlackController do
 
   alias ArthurFacts.Fact
 
+  @forbidden_channels ~w(general dev-null)
+
+  def get_fact(conn, %{"channel_name" => channel}) when channel in @forbidden_channels do
+    resp(conn, 200, "You can't post Arthur facts in #{channel}!")
+  end
+
   def get_fact(conn, params) do
     fact = Fact.get()
     conn = resp(conn, 204, "")
