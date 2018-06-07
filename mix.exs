@@ -37,7 +37,8 @@ defmodule ArthurFacts.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:httpoison, "~> 1.0"},
-      {:alexa_request_verifier, "~> 0.1.4"}
+      {:alexa_request_verifier, "~> 0.1.4"},
+      {:cache_money, "~> 0.3.0"}
     ]
   end
 end
