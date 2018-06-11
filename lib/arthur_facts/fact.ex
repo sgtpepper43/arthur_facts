@@ -4,7 +4,7 @@ defmodule ArthurFacts.Fact do
   alias CacheMoney.Adapters.ETS
 
   # Timeout is in seconds
-  @timeout 60 * 10
+  @timeout 60 * 60 * 12
 
   defp fact_url, do: Application.get_env(:arthur_facts, :fact_url)
 
