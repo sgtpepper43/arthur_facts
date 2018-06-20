@@ -11,7 +11,7 @@ defmodule ArthurFacts.SlackController do
 
   def get_fact(conn, %{"text" => text} = params) when not is_nil(text) do
     case String.trim(text) do
-      "" -> get_fact(conn, Map.drop("text"))
+      "" -> get_fact(conn, Map.drop(params, "text"))
       text -> send_response(text, conn, params)
     end
   end
