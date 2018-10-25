@@ -4,7 +4,7 @@ defmodule ArthurFacts.SlackController do
   alias ArthurFacts.Fact
 
   @forbidden_channels ~w(general)
-  @custom_text_users ~w(trevor james jbrand dennis.beatty korndog jake.oldham)
+  @custom_text_users ~w(trevor james jbrand dennis.beatty korndog kory jake.oldham)
 
   def get_fact(conn, %{"channel_name" => channel}) when channel in @forbidden_channels do
     resp(conn, 200, "You can't post Arthur facts in #{channel}!")
