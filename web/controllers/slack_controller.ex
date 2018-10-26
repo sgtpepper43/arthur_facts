@@ -4,6 +4,7 @@ defmodule ArthurFacts.SlackController do
   alias ArthurFacts.Fact
 
   @forbidden_channels ~w(general)
+  @limitted_channels ~w(engineering utahoffice)
   @custom_text_users ~w(trevor james jbrand dennis.beatty korndog kory jake.oldham)
 
   def get_fact(conn, %{"channel_name" => channel}) when channel in @forbidden_channels do
@@ -18,11 +19,13 @@ defmodule ArthurFacts.SlackController do
     end
   end
 
-  def get_fact(conn, params) do
-    params
-    |> Map.get("channel_name")
-    |> Fact.get()
-    |> send_response(conn, params)
+  def get_fact(conn, %{"channel_name" => channel} = params) do
+    case Fact.get(channel, @limitted_channels) do
+      :limit ->
+        resp(conn, 200, "Too many Arthur facts have been posted in #{channel}! Give it a minute!")
+      fact ->
+        send_response(fact, conn, params)
+    end
   end
 
   defp send_response(fact, conn, params) do
