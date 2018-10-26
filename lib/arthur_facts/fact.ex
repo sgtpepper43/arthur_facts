@@ -5,10 +5,15 @@ defmodule ArthurFacts.Fact do
 
   # Timeout is in seconds
   @timeout 60 * 60 * 12
+  @limit_timeout 60 * 60 * 4 # four hours
+  @purge_frequency 60 * 5 # five minutes
+  @cache_opts %{
+    adapter: ETS, purge_frequency: @purge_frequency
+  }
 
   defp fact_url, do: Application.get_env(:arthur_facts, :fact_url)
 
-  def get(key \\ "default") do
+  def get(key \\ "default", limitted_keys \\ []) do
     {:ok, pid} =
       with pid when not is_nil(pid) <- Process.whereis(__MODULE__),
            true <- Process.alive?(pid) do
@@ -17,21 +22,41 @@ defmodule ArthurFacts.Fact do
         _ -> GenServer.start_link(__MODULE__, nil, name: __MODULE__)
       end
 
-    GenServer.call(pid, {:get, key})
+    GenServer.call(pid, {:get, key, limitted_keys})
   end
 
   @impl true
   def init(_) do
-    CacheMoney.start_link(:fact_cache, %{adapter: ETS})
+    CacheMoney.start_link(:fact_cache, @cache_opts)
   end
 
   @impl true
-  def handle_call({:get, key}, _from, cache) do
+  def handle_call({:get, key, limitted_keys}, _from, cache) do
     [fact | facts] = get_facts(cache, key)
     IO.inspect(length(facts), label: "facts")
-    {:reply, fact, cache}
+    if limit?(cache, key, limitted_keys) do
+      {:reply, :limit, cache}
+    else
+      {:reply, fact, cache}
+    end
   end
 
+  def handle_call({:cache}, _from, cache) do
+    {:reply, cache, cache}
+  end
+
+  defp limit?(cache, key, limitted_keys) do
+    if Enum.member?(limitted_keys, key) do
+      case CacheMoney.get(cache, "#{key}-limit") do
+        {:ok, nil} ->
+          CacheMoney.set(cache, "#{key}-limit", true, @limit_timeout)
+          false
+        _ -> true
+      end
+    else
+      false
+    end
+  end
 
   defp get_facts(cache, key) do
     case CacheMoney.get(cache, key) do
