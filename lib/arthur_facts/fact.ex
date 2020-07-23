@@ -78,7 +78,7 @@ defmodule ArthurFacts.Fact do
   end
 
   defp fetch_facts do
-    case HTTPoison.get(fact_url()) do
+    case HTTPoison.get(fact_url(), [], follow_redirect: true) do
       {:ok, %{body: fact_resp}} ->
         fact_resp
         |> String.replace("\uFEFF", "")
